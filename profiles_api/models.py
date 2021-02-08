@@ -1,7 +1,7 @@
 from django.db import models
 #import these to override djangos default user model
 from django.contrib.auth.models import AbstractBaseUser
-#from django.contrib.auth.models import PermissionMixin
+from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
 class UserProfileManager(BaseUserManager):
@@ -24,14 +24,14 @@ class UserProfileManager(BaseUserManager):
         """"Create and save a new super user with given details"""
         user = self.create_user(email, name, password)
 
-        user.is_superuser = True
+        user.is_superuser = True  
         user.is_staff = True
         user.save(using=self._db)
 
         return user
 
 
-class UserProfile(AbstractBaseUser):
+class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
